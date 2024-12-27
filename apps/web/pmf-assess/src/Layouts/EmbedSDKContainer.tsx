@@ -25,7 +25,9 @@ const EmbedSDKContainer = ({project}:projectAttributes) => {
 
 
    const _embedSdk = async () => {
+
     if(embeddedSDKRef.current){
+        console.log("inside the function")
          return sdk.embedProject(embeddedSDKRef.current,
         {
             files : project.files,
@@ -34,8 +36,8 @@ const EmbedSDKContainer = ({project}:projectAttributes) => {
             description : project.description
         },
         {
-            openFile : project?.openFile || 'README.md',
-            height : project?.height ?? 800,
+            openFile : project?.openFile || 'index.html',
+            height : project?.height ?? 600,
             width : project?.width ?? '100%',
             startScript : project?.initScripts,
         }
@@ -44,9 +46,11 @@ const EmbedSDKContainer = ({project}:projectAttributes) => {
    }
 
     useEffect(()=>{
-        _embedSdk()
-    },[])
-
+        console.log("project files iin use effect",project)
+        _embedSdk();
+        
+    },[project])
+    
     return (
         <>
         <div id='embed-container' ref={embeddedSDKRef}>

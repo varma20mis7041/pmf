@@ -17,37 +17,38 @@ const navItems = {
 
 const AuthLayout = () => {
     const [currentTab,updateCurrentTab] = useState(navItems.dashboard)
+    
     console.log(currentTab)
     return (
         <div className="min-h-[100vh] w-[20%] bg-slate-200 ">
             <h1 className="mx-5 my-3 text-2xl font-mono font-bold">Neo App</h1>
             <nav className="mx-5">
                 <NavLink to="/">
-                    <div className="flex items-center my-2" onClick={()=>updateCurrentTab(navItems.dashboard)}>
+                    <div className="flex items-center my-3" onClick={()=>updateCurrentTab(navItems.dashboard)}>
                         <MdDashboardCustomize />
                         <h1 className={`ml-2 text-md text-zinc-800 ${currentTab === navItems.dashboard ? "font-bold" : "font-medium"} `}>Dashboard</h1>
                     </div>
                 </NavLink>
                 <NavLink to="/templates" onClick={()=>updateCurrentTab(navItems.templates)}>
-                    <div className="flex items-center my-2">
+                    <div className="flex items-center my-3">
                         <HiTemplate />
                         <h1 className={`ml-2 text-md  text-zinc-800 ${currentTab === navItems.templates ? "font-bold" : "font-medium"} `}>Templates</h1>
                     </div>
                 </NavLink>
                 <NavLink to="/assignments" onClick={()=>updateCurrentTab(navItems.assignments)}>
-                    <div className="flex items-center my-2">
+                    <div className="flex items-center my-3">
                         <MdAssignment />
                         <h1 className={`ml-2 text-md  text-zinc-800 ${currentTab === navItems.assignments ? "font-bold":"font-medium"} `}>Assignments</h1>
                     </div>
                 </NavLink>
                 <NavLink to="/attempts" onClick={()=>updateCurrentTab(navItems.attempts)}>
-                    <div className="flex items-center my-2">
+                    <div className="flex items-center my-3">
                         <TbTargetArrow />
                         <h1 className={`ml-2 text-md  text-zinc-800 ${currentTab === navItems.attempts ? "font-bold" : "font-medium"} `}>Attempts</h1>
                     </div>
                 </NavLink>
                 <NavLink to="/settings"  onClick={()=>updateCurrentTab(navItems.settings)}>
-                    <div className="flex items-center my-2">
+                    <div className="flex items-center my-3">
                         <MdSettings />
                         <h1 className={`ml-2 text-md  text-zinc-800 ${currentTab === navItems.settings ? "font-bold" : "font-medium"} `}>Settings</h1>
                     </div>

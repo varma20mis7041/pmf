@@ -5,6 +5,7 @@ import AuthLayout from './Layouts/AuthLayout'
 import Dashboard from './pages/Dashboard';
 import Templates from './pages/Templates/Templates';
 import TemplateDetailedPage from './pages/Templates/TemplateDetails';
+import CreateTemplate from './pages/Templates/CreateTemplate';
 
 
 const App = () => {
@@ -17,7 +18,8 @@ const App = () => {
         </Routes>
         <Routes>
           <Route path='/templates' element={<Templates />} />
-          <Route path='/template/:id' element={<TemplateDetailedPage /> } />
+          <Route path='/templates/:id' element={<TemplateDetailedPage /> } />
+          <Route path='/templates/create-template' element={<CreateTemplate />} />
         </Routes>
       </div>
     </div>
