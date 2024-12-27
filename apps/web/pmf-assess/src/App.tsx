@@ -3,7 +3,8 @@
 
 import AuthLayout from './Layouts/AuthLayout'
 import Dashboard from './pages/Dashboard';
-import Templates from './pages/Templates';
+import Templates from './pages/Templates/Templates';
+import TemplateDetailedPage from './pages/Templates/TemplateDetails';
 
 
 const App = () => {
@@ -16,6 +17,7 @@ const App = () => {
         </Routes>
         <Routes>
           <Route path='/templates' element={<Templates />} />
+          <Route path='/template/:id' element={<TemplateDetailedPage /> } />
         </Routes>
       </div>
     </div>
