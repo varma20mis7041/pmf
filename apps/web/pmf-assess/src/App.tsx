@@ -19,7 +19,7 @@ const App = () => {
         <Routes>
           <Route path='/templates' element={<Templates />} />
           <Route path='/templates/:id' element={<TemplateDetailedPage /> } />
-          <Route path='/templates/create-template' element={<CreateTemplate />} />
+          <Route path='/templates/create-template/:id' element={<CreateTemplate />} />
         </Routes>
       </div>
     </div>
