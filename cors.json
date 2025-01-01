@@ -1,0 +1,8 @@
+{
+  "cors": {
+    "allow-origin": ["*"],
+    "allow-methods": ["GET", "POST", "PUT"],
+    "allow-headers": ["*"],
+    "expose-headers": ["ETag"]
+  }
+}

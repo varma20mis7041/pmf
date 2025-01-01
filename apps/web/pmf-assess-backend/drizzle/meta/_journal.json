@@ -8,6 +8,41 @@
       "when": 1735199225342,
       "tag": "0000_chemical_the_stranger",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1735542625887,
+      "tag": "0001_curvy_chronomancer",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1735552875469,
+      "tag": "0002_hard_black_bird",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1735628144149,
+      "tag": "0003_smiling_gamma_corps",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1735640230684,
+      "tag": "0004_nosy_ben_grimm",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1735756048883,
+      "tag": "0005_ordinary_madrox",
+      "breakpoints": true
     }
   ]
 }

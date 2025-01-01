@@ -18,7 +18,11 @@ interface projectAttributes {
 }
 
 
-const EmbedSDKContainer = ({project}:projectAttributes) => {
+const EmbedSDKContainer = (props) => {
+
+    const {project}:projectAttributes = props;
+
+    const {getFiles,buttonName} = props;
 
     console.log("files coming to the sdk",project)
     const embeddedSDKRef = useRef<HTMLDivElement | null >(null);
@@ -45,15 +49,27 @@ const EmbedSDKContainer = ({project}:projectAttributes) => {
     }
    }
 
+   const sendFiles = async() => {
+    const iframe = document.getElementById('embed-container');
+    const vm = await sdk.connect(iframe);
+    const files:any = await vm.getFsSnapshot();
+    getFiles(files)
+    
+   }
+
     useEffect(()=>{
         console.log("project files iin use effect",project)
         _embedSdk();
         
-    },[project])
+    },[project]) 
+
     
     return (
         <>
         <div id='embed-container' ref={embeddedSDKRef}>
+        </div>
+        <div className='flex justify-center'>
+            <button onClick={sendFiles} className='mt-2 h-[30px]  rounded text-white font-medium bg-black px-2 text-sm cursor-pointer'>{buttonName}</button>
         </div>
         </>
     )
