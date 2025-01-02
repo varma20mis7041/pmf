@@ -11,6 +11,7 @@ import CreateAssignment from './pages/Assignments/CreateAssignment';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { fetchTemplates } from './redux/fetchTemplatesSlice';
+import AssignmentDetails from './pages/Assignments/AssignmentDetails';
 
 
 const App = () => {
@@ -31,6 +32,7 @@ const App = () => {
           <Route path='/templates/create-template/:id' element={<CreateTemplate />} />
           <Route path='/assignments' element={<Assignments />} />
           <Route path='/assignments/new/:id/:template' element={<CreateAssignment />} />
+          <Route path='/assignments/:id' element = {<AssignmentDetails />} />
         </Routes>
       </div>
     </div>

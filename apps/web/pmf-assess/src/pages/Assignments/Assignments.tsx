@@ -8,7 +8,9 @@ import { NavLink, useNavigate } from "react-router";
 const Assignments = () => {
     const [assignments,updateAssignments] = useState([]);
     const [displayChooseTemplate,updateChooseTemplatePopupStatus] = useState(false);
-    const [selectedTemplate,updateSelectedTemplate] = useState(null)
+    const [selectedTemplate,updateSelectedTemplate] = useState(null);
+
+    const [loading,updateLoadingStatus] = useState(true);
 
     const dispatch = useDispatch();
 
@@ -30,19 +32,25 @@ const Assignments = () => {
 
     const fetchAllAssignemnts = async() => {
 
-        const response = await fetch('http://localhost:4000/api/assignments/get-assignments',{
-            method:"GET",
-            headers : {
-                'Content-type' : 'application/json'
+        try{
+            const response = await fetch('http://localhost:4000/api/assignments/get-assignments',{
+                method:"GET",
+                headers : {
+                    'Content-type' : 'application/json'
+                }
+            })
+    
+            if(response.ok){
+                const result = await response.json();
+                console.log("all assignments",result);
+                updateAssignments(result.assignments)
             }
-        })
-
-        if(response.ok){
-            const result = await response.json();
-            console.log("all assignments",result);
-            updateAssignments(result.assignments)
+        }catch(error){
+            console.log(error)
+        }finally{
+            updateLoadingStatus(false)
         }
-        
+       
     }
 
     useEffect(()=>{
@@ -66,10 +74,17 @@ const Assignments = () => {
     return (
         <div className="p-10">
         <h1 className="text-4xl font-bold mb-10">Assignments</h1>
+        
         {assignments.length === 0 && (
             <div className="h-[80vh] w-full flex flex-col justify-center items-center">
-                <h1 className="text-3xl font-bold mb-3">No Assignments Found!</h1>
-                <button onClick={()=>updateChooseTemplatePopupStatus(true)}  className="h-[30px]  rounded text-white font-medium bg-black px-2 text-sm cursor-pointer">Add new Assignment</button>
+               {loading ? (
+                <p className="text-xl font-medium">Loading...</p>
+               ):(
+                <>
+                    <h1 className="text-xl font-bold mb-2">No Assignments Found!</h1>
+                    <button onClick={()=>updateChooseTemplatePopupStatus(true)}  className="h-[30px]  rounded text-white font-medium bg-black px-2 text-sm cursor-pointer">Add new Assignment</button>
+                </>
+               )}
             </div>
         )}
         {assignments.length > 0 && (
@@ -98,7 +113,9 @@ const Assignments = () => {
                     <p className={`font-medium bg-gray-500  px-2 rounded ${getDifficultyColor(eachAssignment.difficulty)} `}>{eachAssignment.difficulty}</p> {/* Assuming `difficulty` is a field */}
                 </div>
                 <div className="flex justify-center items-center">
+                    <NavLink to={`/assignments/${eachAssignment.id}`}>
                     <button className="font-medium py-[2px] rounded text-white bg-black px-2 text-sm cursor-pointer">Edit</button>
+                    </NavLink>
                 </div>
             </div>
 
@@ -113,7 +130,7 @@ const Assignments = () => {
                     <div className="w-screen h-screen fixed top-0 bottom-0 left-0 right-0 ">
                         <div className="w-screen h-screen fixed top-0 bottom-0 left-0 right-0 bg-[rgb(49,49,49,0.8)]">
                             <div className="flex justify-center items-center h-screen">
-                                    <div className="bg-slate-300 h-[70vh] w-[70vw] p-3 rounded overflow-y-auto">
+                                    <div className="bg-slate-300  w-[70vw] p-3 rounded overflow-y-auto">
                                         <div className="h-[3%] flex justify-end items-center">
                                             <button className="" onClick={()=>{updateChooseTemplatePopupStatus(false);updateSelectedTemplate(null)}}><IoCloseSharp size={20} /></button>
                                         </div>

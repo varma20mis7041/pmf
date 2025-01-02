@@ -3,6 +3,8 @@ import db from '../../db';
 import {assignments} from '../../db/schema'
 import { v4 as uuidv4 } from 'uuid';
 import minioClient from '../../utils/minioClient';
+import { eq } from 'drizzle-orm';
+import { request } from 'minio/dist/esm/internal/request.mjs';
 
 const router = express.Router();
 
@@ -13,8 +15,10 @@ router.post('/create-assignment',async(request:any , response:any) => {
 
     // const [newAssignment] = db.
 
+    const id = uuidv4();
+
     const bucketName = 'assignments'
-    const objectName = `assignment-${uuidv4()}.json`
+    const objectName = `assignment-${id}.json`
     const content = JSON.stringify(files);
 
     await minioClient.putObject(bucketName,objectName,content);
@@ -26,7 +30,8 @@ router.post('/create-assignment',async(request:any , response:any) => {
         templateId,
         bucketUrl : url, 
         difficulty,
-        template
+        template,
+        objectId : id
     })
 
     response.status(200).json({
@@ -42,6 +47,50 @@ router.get('/get-assignments',async(request:any,response:any)=>{
     }catch(error){
         response.status(500).json({error:"Error in fetching all assignments"})
     }
+
+})
+
+router.get('/get-assignment/:id',async(request:any,response:any)=>{
+    const {id} = request.params;
+
+    try{
+        const assignmentDetails = await db.select().from(assignments).where(eq(assignments.id,id));
+        response.status(200).json({
+            assignment : assignmentDetails
+        })
+    }catch(error){
+        response.status(500).json({
+            error : error
+        })
+    }
+
+})
+
+router.post('/update-assignment',async(request:any,response:any) => {
+    const {id,title,description,difficulty,files,objectId} = request.body;
+    
+    const bucketName = 'assignments';
+    const objectName = `assignment-${objectId}.json`;
+    const content = JSON.stringify(files);
+
+   try{
+    await minioClient.putObject(bucketName,objectName,content);
+
+    await db.update(assignments).set({
+        title,
+        description,
+        difficulty,
+    }).where(eq(assignments.id,id));
+
+    response.status(200).json({
+        msg : "Assignment updated successfully"
+    })
+   }catch(error){
+    response.status(500).json({
+        error : error
+    })
+   }
+
 
 })
 

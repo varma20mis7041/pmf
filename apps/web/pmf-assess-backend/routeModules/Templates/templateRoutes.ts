@@ -4,6 +4,7 @@ import { templates } from '../../db/schema';
 import minioClient from '../../utils/minioClient';
 import { eq } from 'drizzle-orm';
 import { v4 as uuidv4 } from 'uuid';
+import { request } from 'minio/dist/esm/internal/request.mjs';
 
 
 const router = express.Router();
@@ -51,7 +52,7 @@ router.get("/get-template/:id",async(request,response)=>{
 
 router.post('/create-template',async (request,response)=>{
     const {title , description , files,fileNames,template} =  request.body
-    console.log(request.body)
+    //console.log(request.body)
 
     const id = uuidv4();
 
@@ -68,6 +69,7 @@ router.post('/create-template',async (request,response)=>{
         bucketUrl : url,
         template,
         fileNames : JSON.stringify(fileNames),
+        objectId : id,
         updatedAt : new Date(),
     })
 
@@ -75,6 +77,29 @@ router.post('/create-template',async (request,response)=>{
         message : "New template created successfully"
     });
 
+
+})
+
+router.post("/update-template",async(request:any,response:any)=>{
+    console.log(request.body);
+    const {id,title , description , files,fileNames,template,objectId} =  request.body
+
+    const bucketName = "templates";
+    const objectName = `template-${objectId}.json`;
+    const content = JSON.stringify(files);
+
+    await minioClient.putObject(bucketName,objectName,content);
+
+    await db.update(templates).set({
+        name : title,
+        description,
+        fileNames : JSON.stringify(fileNames),
+        updatedAt : new Date()
+    }).where(eq(templates.id,id))
+
+    response.status(200).json({
+        message : "New template updated successfully"
+    });
 
 })
 

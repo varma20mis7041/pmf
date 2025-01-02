@@ -21,6 +21,7 @@ export const templates = pgTable('templates', {
     bucketUrl: varchar('bucket_url'), // URL for the JSON file in the bucket
     fileNames : varchar('file_names'),
     template : varchar('template'),
+    objectId : varchar('objectId'),
     createdAt: timestamp('created_at').defaultNow(),
     updatedAt: timestamp('updated_at').defaultNow()
 });
@@ -34,6 +35,7 @@ export const assignments = pgTable('assignments', {
     bucketUrl: varchar('bucket_url'), // URL for the JSON file in the bucket
     difficulty: varchar('difficulty'),
     template : varchar('template'),
+    objectId : varchar('objectId'),
     createdAt: timestamp('created_at').defaultNow(),
     updatedAt: timestamp('updated_at').defaultNow()
 });

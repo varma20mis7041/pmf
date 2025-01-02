@@ -68,9 +68,11 @@ const EmbedSDKContainer = (props) => {
         <>
         <div id='embed-container' ref={embeddedSDKRef}>
         </div>
-        <div className='flex justify-center'>
-            <button onClick={sendFiles} className='mt-2 h-[30px]  rounded text-white font-medium bg-black px-2 text-sm cursor-pointer'>{buttonName}</button>
-        </div>
+        {buttonName !== "" && (
+            <div className='flex justify-center'>
+                <button onClick={sendFiles} className='mt-2 h-[30px]  rounded text-white font-medium bg-black px-2 text-sm cursor-pointer'>{buttonName}</button>
+            </div>
+        )}
         </>
     )
 }

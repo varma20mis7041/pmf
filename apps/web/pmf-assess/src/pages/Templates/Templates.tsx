@@ -63,7 +63,7 @@ const Templates = () => {
             </div>
             </div>
          ))}
-         {status === 'succeeded' && templates.length === 0 && (
+         {status === 'failed' || templates.length === 0 && (
             <div className="h-[80vh] flex flex-col  justify-center items-center ">
                 <h1 className="text-xl font-bold mb-3">No Templates Found!</h1>
                 <button onClick={() => setThemsPopup(true)} className="h-[30px]  rounded text-white font-medium bg-black px-2 text-sm cursor-pointer">Add new Template</button>

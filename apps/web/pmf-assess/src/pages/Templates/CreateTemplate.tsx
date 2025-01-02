@@ -4,7 +4,9 @@ import EmbedSDKContainer from "@/Layouts/EmbedSDKContainer";
 import { fetchTemplates } from "@/redux/fetchTemplatesSlice";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useParams } from "react-router";
+import { NavLink, useParams } from "react-router";
+
+import ScaleLoader from 'react-spinners/ScaleLoader'
 
 const baseThemes:{[key:string]:string} = {
     'react' : 'create-react-app',
@@ -16,6 +18,12 @@ const baseThemes:{[key:string]:string} = {
     'html' : 'html'
 }
 
+const popupStatus = {
+    loading : 'loading',
+    success : 'success',
+    failure : 'failure'
+}
+
 const CreateTemplate = () => {
 
     const {id} = useParams<{id:string}>();
@@ -23,6 +31,9 @@ const CreateTemplate = () => {
     const [title,updateTitle] = useState("");
     const [description,updateDescription] = useState("");
     const selectedThemeFiles = TemplateThemes.find(t => t.id === id)
+
+    const [popup,updatePopupStatus] = useState(false);
+    const [popupState , updatePopupState] = useState(popupStatus.loading)
     //console.log("id",id,TemplateThemes,selectedThemeFiles)
     const project : Template = {
        id:id,
@@ -41,6 +52,8 @@ const CreateTemplate = () => {
     
     
     const getFiles = async(files) => {
+        updatePopupStatus(true);
+        updatePopupState(popupStatus.loading)
 
         {/* {Object.keys(template.files).map(eachKey => (
                     <p>{eachKey}</p>
@@ -66,7 +79,13 @@ const CreateTemplate = () => {
         }
         const resposnse = await fetch("http://localhost:4000/api/templates/create-template",options)
         console.log(resposnse);
-        dispatch(fetchTemplates())
+        if(resposnse.ok){
+            updatePopupState(popupStatus.success)
+            dispatch(fetchTemplates());
+        }else{
+            updatePopupState(popupStatus.failure)
+        }
+        
     }
    
     return (
@@ -83,6 +102,38 @@ const CreateTemplate = () => {
                 </div>
             </form>
            <EmbedSDKContainer project={project} getFiles = {getFiles} buttonName = "Add Template" />
+           {popup && (
+            <div className="w-screen h-screen fixed top-0 bottom-0 left-0 right-0 ">
+                <div className="w-screen h-screen fixed top-0 bottom-0 left-0 right-0 bg-[rgb(49,49,49,0.8)]">
+                    {popupState === popupStatus.loading && (
+                        <div className="flex justify-center items-center h-screen">
+                        <ScaleLoader />
+                    </div>
+                    )}
+                    {popupState === popupStatus.success && (
+                        <div className="w-screen h-screen flex justify-center items-center">
+                            <div className="bg-slate-300 h-[30vh] w-[30vw] p-3 rounded flex justify-center items-center ">
+                                <div className="flex flex-col items-center justify-center">
+                                    <h1 className="mb-3 text-xl font-medium">Template Created Successfully!</h1>
+                                    <NavLink to="/templates">
+                                        <button className="font-medium py-[2px] rounded text-white bg-black px-2 text-sm cursor-pointer">View Templates</button>
+                                    </NavLink>
+                                </div>
+                        </div>
+                        </div>
+                    )}
+                    {popupState === popupStatus.failure && (
+                        <div className="bg-slate-300 h-[40vh] w-[40vw] p-3 rounded ">
+                                <div className="flex flex-col items-center justify-center">
+                                    <h1 className="mb-3 text-xl font-medium">Error in creating template</h1>
+                                    <button onClick={()=>fetchTemplates()} className="font-medium py-[2px] rounded text-white bg-black px-2 text-sm cursor-pointer">Retry</button>
+                                </div>
+                        </div>
+                    )}
+                    
+                </div>
+            </div>
+           )}
         </div>
     )
 }
