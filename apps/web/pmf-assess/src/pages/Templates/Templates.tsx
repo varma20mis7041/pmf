@@ -29,7 +29,25 @@ const Templates = () => {
     const error = useSelector((state:RootState)=> state.templates.error)
     const status = useSelector((state:RootState)=> state.templates.status)
 
+    const onclickStatusButton = async(id:number,status:string) => {
+        const updatedStatus = status === "Active" ? "Archived" : "Active"
 
+        const postStatus = await fetch("http://localhost:4000/api/templates/update-template-status",{
+            method : "POST",
+            body : JSON.stringify({
+                id,
+                status:updatedStatus
+            }),
+            headers : {
+                'Content-type' : 'application/json'
+            }
+        })
+        if(postStatus.ok){
+            const result = await postStatus.json();
+            console.log("result",result);
+            dispatch(fetchTemplates());
+        }
+    }
 
     return <div className="p-10">
         <h1 className="text-4xl font-bold mb-10">Templates</h1>
@@ -49,11 +67,16 @@ const Templates = () => {
             <div className="w-[50%] p-10 border border-slate-300 rounded">
                 <h1 className="text-xl font-bold">{template.name}</h1>
                 <p>{template.description}</p>
-                <button className="h-[30px] px-2 rounded text-white font-medium bg-black mt-5 text-sm">
+                <div className="flex items-center">
+                <button className="h-[30px] px-2 rounded text-white font-medium bg-black mt-5 text-sm mr-3">
                     <Link to= {`/templates/${template.id}`} >
                     View Template
                     </Link>
                 </button>
+                <button onClick={()=>onclickStatusButton(template.id,template.status)} className="h-[30px] px-2 rounded text-white font-medium bg-black mt-5 text-sm">
+                    {template.status === 'Active' ? 'Archive' : 'Active'}
+                </button>
+                </div>
             </div>
             <div className="w-[50%] bg-slate-200 p-5">
                 {JSON.parse(template.fileNames).map(eachKey => (

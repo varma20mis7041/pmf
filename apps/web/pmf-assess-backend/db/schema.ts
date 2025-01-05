@@ -22,6 +22,7 @@ export const templates = pgTable('templates', {
     fileNames : varchar('file_names'),
     template : varchar('template'),
     objectId : varchar('objectId'),
+    status : varchar('status'),
     createdAt: timestamp('created_at').defaultNow(),
     updatedAt: timestamp('updated_at').defaultNow()
 });
@@ -36,6 +37,7 @@ export const assignments = pgTable('assignments', {
     difficulty: varchar('difficulty'),
     template : varchar('template'),
     objectId : varchar('objectId'),
+    status : varchar('status'),
     createdAt: timestamp('created_at').defaultNow(),
     updatedAt: timestamp('updated_at').defaultNow()
 });

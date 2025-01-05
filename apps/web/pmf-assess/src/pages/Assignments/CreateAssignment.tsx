@@ -62,13 +62,14 @@ const CreateAssignment = () => {
     const [difficulty, updateDifficulty] = useState("Easy");
 
     const getFiles = async(files) => {
-        updatePopupStatus(true);
-        updatePopupState(popupStatus.loading);
+        
 
         console.log(files);
         if(title === "" || description === "") {
             alert("Please fill title and description fields");
         } else {
+            updatePopupStatus(true);
+            updatePopupState(popupStatus.loading);
             const assignmentDetails = {
                 templateId : id,
                 title,

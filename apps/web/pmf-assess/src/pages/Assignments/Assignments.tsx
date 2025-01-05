@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router";
 
 const Assignments = () => {
+    const role = localStorage.getItem('role');
     const [assignments,updateAssignments] = useState([]);
     const [displayChooseTemplate,updateChooseTemplatePopupStatus] = useState(false);
     const [selectedTemplate,updateSelectedTemplate] = useState(null);
@@ -14,7 +15,8 @@ const Assignments = () => {
 
     const dispatch = useDispatch();
 
-    const templates = useSelector((state:RootState)=> state.templates.templates);
+    const templatesFromRedux = useSelector((state:RootState)=> state.templates.templates);
+    const templates = templatesFromRedux.filter((eachTemplate)=>eachTemplate.status === "Active")
     const error = useSelector((state:RootState)=> state.templates.error)
     const status = useSelector((state:RootState)=> state.templates.status)
     // console.log("state from redux store",templates,error,status)
@@ -82,7 +84,7 @@ const Assignments = () => {
                ):(
                 <>
                     <h1 className="text-xl font-bold mb-2">No Assignments Found!</h1>
-                    <button onClick={()=>updateChooseTemplatePopupStatus(true)}  className="h-[30px]  rounded text-white font-medium bg-black px-2 text-sm cursor-pointer">Add new Assignment</button>
+                    {role === "auth" && <button onClick={()=>updateChooseTemplatePopupStatus(true)}  className="h-[30px]  rounded text-white font-medium bg-black px-2 text-sm cursor-pointer">Add new Assignment</button>}
                 </>
                )}
             </div>
@@ -90,19 +92,21 @@ const Assignments = () => {
         {assignments.length > 0 && (
             <div>
             <div className="flex justify-end my-5">
-            <button  onClick={()=>updateChooseTemplatePopupStatus(true)}  className="h-[30px] rounded text-white font-medium bg-black px-2 text-sm cursor-pointer">Add new Assignment</button>
+            {role === "auth" && <button  onClick={()=>updateChooseTemplatePopupStatus(true)}  className="h-[30px] rounded text-white font-medium bg-black px-2 text-sm cursor-pointer">Add new Assignment</button>}
         </div>
         <div className="w-full bg-slate-300 rounded mb-3 p-2">
-            <div className="grid grid-cols-4">
+            <div className="grid grid-cols-5">
                 <p className="font-bold flex justify-center items-center">Name</p>
                 <p className="font-bold flex justify-center items-center">Type</p>
                 <p className="font-bold flex justify-center items-center">Level</p>
-                <p className="font-bold flex justify-center items-center">Edit</p>
+                <p className="font-bold flex justify-center items-center">Status</p>
+                {role === 'auth' && <p className="font-bold flex justify-center items-center">Edit</p>}
+                {role === "student" && <p className="font-bold flex justify-center items-center">Take Test</p>}
             </div>
         </div>
         {assignments.map((eachAssignment, index) => (
             <div key={eachAssignment.id || index} className="w-full bg-slate-100 rounded mb-3 p-2">
-                <div className="grid grid-cols-4">
+                <div className="grid grid-cols-5">
                 <div className="flex justify-center items-center">
                     <p className="font-medium">{eachAssignment.title}</p>
                 </div>
@@ -112,11 +116,24 @@ const Assignments = () => {
                 <div className="flex justify-center items-center ">
                     <p className={`font-medium bg-gray-500  px-2 rounded ${getDifficultyColor(eachAssignment.difficulty)} `}>{eachAssignment.difficulty}</p> {/* Assuming `difficulty` is a field */}
                 </div>
-                <div className="flex justify-center items-center">
-                    <NavLink to={`/assignments/${eachAssignment.id}`}>
-                    <button className="font-medium py-[2px] rounded text-white bg-black px-2 text-sm cursor-pointer">Edit</button>
+                <div className="flex justify-center items-center ">
+                    <p className={`font-medium bg-gray-500  px-2 rounded ${getDifficultyColor(eachAssignment.difficulty)} `}>{eachAssignment.status}</p> {/* Assuming `difficulty` is a field */}
+                </div>
+                {role === 'auth' && (
+                    <div className="flex justify-center items-center">
+                        <NavLink to={`/assignments/${eachAssignment.id}`}>
+                        <button className="font-medium py-[2px] rounded text-white bg-black px-2 text-sm cursor-pointer">Edit</button>
+                        </NavLink>
+                    </div>
+                )}
+                {role === 'student' && (
+                    <div className="flex justify-center items-center">
+                    <NavLink to={`/test/${eachAssignment.id}`}>
+                    <button className="font-medium py-[2px] rounded text-white bg-black px-2 text-sm cursor-pointer">test</button>
                     </NavLink>
                 </div>
+                )}
+
             </div>
 
             </div>
@@ -134,7 +151,7 @@ const Assignments = () => {
                                         <div className="h-[3%] flex justify-end items-center">
                                             <button className="" onClick={()=>{updateChooseTemplatePopupStatus(false);updateSelectedTemplate(null)}}><IoCloseSharp size={20} /></button>
                                         </div>
-                                        <h1 className="text-center text-2xl font-bold mb-3">Choose a Template</h1>
+                                        {templates.length > 0 && <h1 className="text-center text-2xl font-bold mb-3">Choose a Template</h1>}
                                         {status === 'loading' || status === 'idle' && (
                                             <div className="h-[100%] flex justify-center items-center">
                                                 <h1 className="text-xl">Loading...</h1>
@@ -153,6 +170,11 @@ const Assignments = () => {
                                                 </div>
                                             </div>
                                             ))}
+                                            {status === "succeeded" && templates.length === 0 && (
+                                                <div className="flex justify-center">
+                                                    <h1 className="text-xl font-medium">No Templates Found</h1>
+                                                </div>
+                                            )}
                                             {status === "failed" && (
                                                         <div className="h-[70vh] flex justify-center items-center">
                                                             <div className="flex flex-col justify-center items-center">
@@ -161,12 +183,14 @@ const Assignments = () => {
                                                             </div>
                                                         </div>
                                                      )}
-                                            <div className="flex justify-center items-center">
+                                            {templates.length > 0 && (
+                                                <div className="flex justify-center items-center">
                                                 <button disabled={selectedTemplate === null} onClick={onClickCreateAssignment}
                                                 className={`h-[30px]  rounded text-white font-medium bg-black px-2 text-sm ${selectedTemplate === null ? 'cursor-not-allowed opacity-50':"opacity-100 cursor-pointer"}  `}>
                                                     Create Assignment
                                                 </button>
                                             </div>
+                                            )}
                                     </div>
                             </div>
                         </div>

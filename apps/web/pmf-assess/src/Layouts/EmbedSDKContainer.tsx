@@ -35,7 +35,7 @@ const EmbedSDKContainer = (props) => {
          return sdk.embedProject(embeddedSDKRef.current,
         {
             files : project.files,
-            template : project.template,
+            template : 'node',
             title : project.title ?? "temp title",
             description : project.description
         },
@@ -62,6 +62,23 @@ const EmbedSDKContainer = (props) => {
         _embedSdk();
         
     },[project]) 
+
+
+    useEffect(() => {
+        const handleMessage = (event) => {
+            if (event.data.type === 'test-results') {
+                console.log('Test results from StackBlitz:', event.data.results);
+                // Now you have the results in your React component
+                // You can update state, display them, etc.
+            }
+        };
+
+        window.addEventListener('message', handleMessage);
+
+        return () => {
+            window.removeEventListener('message', handleMessage); // Clean up
+        };
+    }, []);
 
     
     return (

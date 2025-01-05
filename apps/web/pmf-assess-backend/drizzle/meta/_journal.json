@@ -50,6 +50,20 @@
       "when": 1735797922606,
       "tag": "0006_awesome_mephisto",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1735882520121,
+      "tag": "0007_puzzling_vector",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1735885684444,
+      "tag": "0008_messy_molecule_man",
+      "breakpoints": true
     }
   ]
 }

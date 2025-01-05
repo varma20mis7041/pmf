@@ -31,6 +31,7 @@ router.post('/create-assignment',async(request:any , response:any) => {
         bucketUrl : url, 
         difficulty,
         template,
+        status : 'Active',
         objectId : id
     })
 

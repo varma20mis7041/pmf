@@ -6,194 +6,238 @@ interface Theme {
 }
 
 export const TemplateThemes : Theme [] = [
-    {
-      id: 'react',
-      template : "create-react-app",
-      files: {
-        'public/index.html': `
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-          <meta charset="UTF-8" />
-          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-          <title>React App</title>
-        </head>
-        <body>
-          <div id="root"></div>
-        </body>
-        </html>
-        `,
-        
-        'src/index.tsx': `
-        import React from 'react';
-        import ReactDOM from 'react-dom/client';
-        import App from './App';
-        import './index.css';
-        
-        const root = ReactDOM.createRoot(document.getElementById('root')!);
-        root.render(
-          <React.StrictMode>
-            <App />
-          </React.StrictMode>
-        );
-        `,
-        
-        'src/App.tsx': `
-        import React, { useState } from 'react';
-        
-        function App() {
-          const [count, setCount] = useState(0);
-        
-          return (
-            <div>
-              <h1>React Counter</h1>
-              <p>Count: {count}</p>
-              <button onClick={() => setCount(count + 1)}>Increment</button>
-            </div>
-          );
-        }
-        
-        export default App;
-        `,
-        
-        'src/App.test.tsx': `
-        import { render, screen, fireEvent } from '@testing-library/react';
-        import { expect, test } from 'vitest';
-        import App from './App';
-        
-        test('renders counter and increments', () => {
-          render(<App />);
-          const countElement = screen.getByText(/Count: 0/i);
-          expect(countElement).toBeInTheDocument();
-        
-          const button = screen.getByText(/Increment/i);
-          fireEvent.click(button);
-        
-          expect(screen.getByText(/Count: 1/i)).toBeInTheDocument();
-        });
-        `,
-        
-        'src/index.css': `
-        body {
-          font-family: Arial, sans-serif;
-          margin: 0;
-          padding: 0;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          height: 100vh;
-          background-color: #f0f0f0;
-        }
-        `
-      },
+  {
+    id: 'react',
+    template : "create-react-app",
+    files: {
+      'public/index.html': `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>React App</title>
+      </head>
+      <body>
+        <div id="root"></div>
+      </body>
+      </html>
+      `,
       
-    dependencies: {
-      'react': '^18.0.0',
-      'react-dom': '^18.0.0',
-      'vitest': '^0.22.1',
-      '@testing-library/react': '^12.1.2',
-    },    
+      'src/index.tsx': `
+      import React from 'react';
+      import ReactDOM from 'react-dom/client';
+      import App from './App.tsx';
+      import './index.css';
+      
+      const root = ReactDOM.createRoot(document.getElementById('root')!);
+      root.render(
+        <React.StrictMode>
+          <App />
+        </React.StrictMode>
+      );
+      `,
+      
+      'src/App.tsx': `
+      import React, { useState } from 'react';
+      
+      function App() {
+        const [count, setCount] = useState(0);
+      
+        return (
+          <div>
+            <h1>React Counter</h1>
+            <p>Count: {count}</p>
+            <button onClick={() => setCount(count + 1)}>Increment</button>
+          </div>
+        );
+      }
+      
+      export default App;
+      `,
+      
+      'src/App.test.tsx': `
+      import { render, screen, fireEvent } from '@testing-library/react';
+      import { expect, test } from 'vitest';
+      import App from './App';
+      
+      test('renders counter and increments', () => {
+        render(<App />);
+        const countElement = screen.getByText(/Count: 0/i);
+        expect(countElement).toBeInTheDocument();
+      
+        const button = screen.getByText(/Increment/i);
+        fireEvent.click(button);
+      
+        expect(screen.getByText(/Count: 1/i)).toBeInTheDocument();
+      });
+      `,
+      
+      'src/index.css': `
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f0f0f0;
+      }
+      `,
+      'package.json': `{
+        "name": "react",
+        "version": "1.0.0",
+        "dependencies": {
+          "react": "^18.0.0",
+          "react-dom": "^18.0.0",
+          "react-scripts": "^5.0.1",
+          "vitest": "^0.22.1",
+          "@testing-library/react": "^12.1.2",
+          "ajv": "^8.11.0"
+        },
+        "scripts": {
+          "start": "react-scripts start",
+          "build": "react-scripts build",
+          "test": "vitest"
+        }
+      }`
     },
-    {
-      id: 'javascript',
-      template : 'javascript',
-      files: {
-        'index.html': `
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Static Counter</title>
-    </head>
-    <body>
-      <h1>Static Counter</h1>
-      <p id="count">Count: 0</p>
-      <button id="increment">Increment</button>
-      <script src="script.js"></script>
-    </body>
-    </html>
-          `,
-        'index.js': `
-    let count = 0;
+  dependencies: {
+    'react': '^18.0.0',
+    'react-dom': '^18.0.0',
+    'vitest': '^0.22.1',
+    '@testing-library/react': '^12.1.2',
+  },    
+  },
+  {
+    id: 'javascript',
+    template : 'javascript',
+    files: {
+      'index.html': `
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Static Counter</title>
+  </head>
+  <body>
+    <h1>Static Counter</h1>
+    <p id="count">Count: 0</p>
+    <button id="increment">Increment</button>
+    <script src="script.js"></script>
+  </body>
+  </html>
+        `,
+      'index.js': `
+  let count = 0;
+  const countElement = document.getElementById('count');
+  const incrementButton = document.getElementById('increment');
+  
+  incrementButton.addEventListener('click', () => {
+    count++;
+    countElement.textContent = \`Count: \${count}\`;
+  });
+        `,
+      'script.test.js': `
+  import { expect, test } from 'vitest';
+  import { JSDOM } from 'jsdom';
+  
+  test('increments counter on button click', () => {
+    const dom = new JSDOM(\`
+      <!DOCTYPE html>
+      <html>
+        <body>
+          <p id="count">Count: 0</p>
+          <button id="increment">Increment</button>
+        </body>
+      </html>
+    \`);
+  
+    global.document = dom.window.document;
+    global.window = dom.window;
+  
+    require('./script.js');
+  
     const countElement = document.getElementById('count');
     const incrementButton = document.getElementById('increment');
-    
-    incrementButton.addEventListener('click', () => {
-      count++;
-      countElement.textContent = \`Count: \${count}\`;
-    });
-          `,
-        'script.test.js': `
-    import { expect, test } from 'vitest';
-    import { JSDOM } from 'jsdom';
-    
-    test('increments counter on button click', () => {
-      const dom = new JSDOM(\`
-        <!DOCTYPE html>
-        <html>
-          <body>
-            <p id="count">Count: 0</p>
-            <button id="increment">Increment</button>
-          </body>
-        </html>
-      \`);
-    
-      global.document = dom.window.document;
-      global.window = dom.window;
-    
-      require('./script.js');
-    
-      const countElement = document.getElementById('count');
-      const incrementButton = document.getElementById('increment');
-    
-      expect(countElement.textContent).toBe('Count: 0');
-    
-      incrementButton.click();
-    
-      expect(countElement.textContent).toBe('Count: 1');
-    });
-          `,
-      },
-      dependencies: {
-        'vitest': '^0.22.1',
-        'jsdom': '^16.7.0',
-      },
+  
+    expect(countElement.textContent).toBe('Count: 0');
+  
+    incrementButton.click();
+  
+    expect(countElement.textContent).toBe('Count: 1');
+  });
+        `,
+      'package.json': `{
+  "name": "vite-typescript-starter",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "typescript": "~5.7.2",
+    "vite": "^6.0.5"
+  }
+}`
     },
-    {
-      id: 'node',
-      template : "node",
-      files: {
-        'src/app.js': `
-    const express = require('express');
-    const app = express();
-    
-    app.get('/', (req, res) => {
-      res.json({ message: 'Hello, World!' });
-    });
-    
-    module.exports = app;
-          `,
-        'test/app.test.js': `
-    const request = require('supertest');
-    const app = require('../src/app');
-    
-    describe('GET /', () => {
-      it('responds with json', async () => {
-        const response = await request(app)
-          .get('/')
-          .expect('Content-Type', /json/)
-          .expect(200);
-    
-        expect(response.body).toEqual({ message: 'Hello, World!' });
-      });
-    });
-          `,
-      },
-      dependencies: {
-        'express': '^4.17.1',
-        'supertest': '^6.1.3',
-        'jest': '^27.0.6',
-      },
+    dependencies: {
+      'vitest': '^0.22.1',
+      'jsdom': '^16.7.0',
     },
-  ];
+  },
+  {
+    id: 'node',
+    template : "node",
+    files: {
+      'src/app.js': `
+  const express = require('express');
+  const app = express();
+  
+  app.get('/', (req, res) => {
+    res.json({ message: 'Hello, World!' });
+  });
+  
+  module.exports = app;
+        `,
+      'test/app.test.js': `
+  const request = require('supertest');
+  const app = require('../src/app');
+  
+  describe('GET /', () => {
+    it('responds with json', async () => {
+      const response = await request(app)
+        .get('/')
+        .expect('Content-Type', /json/)
+        .expect(200);
+  
+      expect(response.body).toEqual({ message: 'Hello, World!' });
+    });
+  });
+        `,
+      'package.json': `{
+        "name": "node",
+        "version": "1.0.0",
+        "dependencies": {
+          "express": "^4.17.1",
+          "supertest": "^6.1.3",
+          "jest": "^27.0.6"
+        },
+        "scripts": {
+          "start": "node src/app.js",
+          "test": "jest"
+        }
+      }`
+    },
+    dependencies: {
+      'express': '^4.17.1',
+      'supertest': '^6.1.3',
+      'jest': '^27.0.6',
+    },
+  }];
+

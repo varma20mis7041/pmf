@@ -52,7 +52,7 @@ router.get("/get-template/:id",async(request,response)=>{
 
 router.post('/create-template',async (request,response)=>{
     const {title , description , files,fileNames,template} =  request.body
-    //console.log(request.body)
+    console.log(request.body)
 
     const id = uuidv4();
 
@@ -69,7 +69,8 @@ router.post('/create-template',async (request,response)=>{
         bucketUrl : url,
         template,
         fileNames : JSON.stringify(fileNames),
-        objectId : id,
+        objectId : id, 
+        status : 'Active',
         updatedAt : new Date(),
     })
 
@@ -101,6 +102,25 @@ router.post("/update-template",async(request:any,response:any)=>{
         message : "New template updated successfully"
     });
 
+})
+
+router.post('/update-template-status',async(request,response)=>{
+
+    const {id,status} = request.body;
+
+    try{
+        await db.update(templates).set({
+            status : status
+        }).where(eq(templates.id,id))
+        response.status(200).json({
+            msg : "Template status updated"
+        })
+    }catch(error){
+        response.status(500).json({
+            error : error,
+            msg : "Error in updating status of the template"
+        })
+    }
 })
 
 // router.post("/get-preasigned-url",async (request,response)=>{

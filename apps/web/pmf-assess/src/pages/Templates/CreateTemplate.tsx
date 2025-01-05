@@ -52,8 +52,8 @@ const CreateTemplate = () => {
     
     
     const getFiles = async(files) => {
-        updatePopupStatus(true);
-        updatePopupState(popupStatus.loading)
+        // updatePopupStatus(true);
+        // updatePopupState(popupStatus.loading)
 
         {/* {Object.keys(template.files).map(eachKey => (
                     <p>{eachKey}</p>
