@@ -9,100 +9,207 @@ export const TemplateThemes : Theme [] = [
   {
     id: 'react',
     template : "create-react-app",
-    files: {
-      'public/index.html': `
-      <!DOCTYPE html>
-      <html lang="en">
-      <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>React App</title>
-      </head>
-      <body>
-        <div id="root"></div>
-      </body>
-      </html>
+    files:{
+      '.gitignore': `
+        # Logs
+        logs
+        *.log
+        npm-debug.log*
+        yarn-debug.log*
+        yarn-error.log*
+        pnpm-debug.log*
+        lerna-debug.log*
+        
+        node_modules
+        dist
+        dist-ssr
+        *.local
+        
+        # Editor directories and files
+        .vscode/*
+        !.vscode/extensions.json
+        .idea
+        .DS_Store
+        *.suo
+        *.ntvs*
+        *.njsproj
+        *.sln
+        *.sw?
       `,
-      
-      'src/index.tsx': `
-      import React from 'react';
-      import ReactDOM from 'react-dom/client';
-      import App from './App.tsx';
-      import './index.css';
-      
-      const root = ReactDOM.createRoot(document.getElementById('root')!);
-      root.render(
-        <React.StrictMode>
-          <App />
-        </React.StrictMode>
-      );
+      'eslint.config.js': `
+        import js from '@eslint/js'
+        import globals from 'globals'
+        import reactHooks from 'eslint-plugin-react-hooks'
+        import reactRefresh from 'eslint-plugin-react-refresh'
+        import tseslint from 'typescript-eslint'
+    
+        export default tseslint.config(
+          { ignores: ['dist'] },
+          {
+            extends: [js.configs.recommended, ...tseslint.configs.recommended],
+            files: ['**/*.{ts,tsx}'],
+            languageOptions: {
+              ecmaVersion: 2020,
+              globals: globals.browser,
+            },
+            plugins: {
+              'react-hooks': reactHooks,
+              'react-refresh': reactRefresh,
+            },
+            rules: {
+              ...reactHooks.configs.recommended.rules,
+              'react-refresh/only-export-components': [
+                'warn',
+                { allowConstantExport: true },
+              ],
+            },
+          },
+        )
       `,
-      
+      'index.html': `
+        <!doctype html>
+        <html lang="en">
+          <head>
+            <meta charset="UTF-8" />
+            <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <title>Vite + React + TS</title>
+          </head>
+          <body>
+            <div id="root"></div>
+            <script type="module" src="/src/main.tsx"></script>
+          </body>
+        </html>
+      `,
+      'package.json': `{
+        "name": "vite-project",
+        "private": true,
+        "version": "0.0.0",
+        "type": "module",
+        "scripts": {
+          "dev": "vite",
+          "build": "tsc -b && vite build",
+          "lint": "eslint .",
+          "preview": "vite preview",
+          "test": "vitest"
+        },
+        "dependencies": {
+          "react": "^18.3.1",
+          "react-dom": "^18.3.1"
+        },
+        "devDependencies": {
+          "@eslint/js": "^9.17.0",
+          "@testing-library/jest-dom": "^6.6.3",
+          "@testing-library/react": "^16.1.0",
+          "@testing-library/user-event": "^14.5.2",
+          "@types/react": "^18.3.18",
+          "@types/react-dom": "^18.3.5",
+          "@vitejs/plugin-react": "^4.3.4",
+          "@vitejs/plugin-react-swc": "^3.5.0",
+          "eslint": "^9.17.0",
+          "eslint-plugin-react-hooks": "^5.0.0",
+          "eslint-plugin-react-refresh": "^0.4.16",
+          "globals": "^15.14.0",
+          "jsdom": "^25.0.1",
+          "typescript": "~5.6.2",
+          "typescript-eslint": "^8.18.2",
+          "vite": "^6.0.5",
+          "vitest": "^2.1.8"
+        }
+      }`,
       'src/App.tsx': `
-      import React, { useState } from 'react';
-      
-      function App() {
-        const [count, setCount] = useState(0);
-      
-        return (
-          <div>
-            <h1>React Counter</h1>
-            <p>Count: {count}</p>
-            <button onClick={() => setCount(count + 1)}>Increment</button>
-          </div>
-        );
-      }
-      
-      export default App;
+        import React, { useState } from 'react';
+    
+        function App() {
+          const [count, setCount] = useState(0);
+    
+          return (
+            <div>
+              <h1>React Counter</h1>
+              <p>Count: {count}</p>
+              <button onClick={() => setCount(count + 1)}>Increment</button>
+            </div>
+          );
+        }
+    
+        export default App;
       `,
-      
-      'src/App.test.tsx': `
-      import { render, screen, fireEvent } from '@testing-library/react';
-      import { expect, test } from 'vitest';
-      import App from './App';
-      
-      test('renders counter and increments', () => {
+      'src/main.tsx': `
+        import { StrictMode } from 'react';
+        import { createRoot } from 'react-dom/client';
+        import App from './App.tsx';
+    
+        createRoot(document.getElementById('root')!).render(
+          <StrictMode>
+            <App />
+          </StrictMode>
+        );
+      `,
+      'src/vite-env.d.ts': `
+        /// <reference types="vite/client" />
+      `,
+      'tsconfig.app.json': `{
+        "compilerOptions": {
+          "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+          "target": "ES2020",
+          "useDefineForClassFields": true,
+          "lib": ["ES2020", "DOM", "DOM.Iterable"],
+          "module": "ESNext",
+          "skipLibCheck": true,
+          "moduleResolution": "bundler",
+          "allowImportingTsExtensions": true,
+          "isolatedModules": true,
+          "moduleDetection": "force",
+          "noEmit": true,
+          "jsx": "react-jsx",
+          "strict": true
+        },
+        "include": ["src"]
+      }`,
+      'vite.config.mts': `
+        import { defineConfig } from 'vite';
+        import react from '@vitejs/plugin-react-swc';
+    
+        export default defineConfig({
+          plugins: [react()],
+        });
+      `,
+      'vitest.config.mts': `
+        import { defineConfig, mergeConfig } from 'vitest/config';
+        import viteConfig from './vite.config.mts';
+    
+        export default mergeConfig(
+          viteConfig,
+          defineConfig({
+            test: {
+              environment: 'jsdom',
+              globals: true,
+              setupFiles: './src/setupTests.ts',
+              reporters: ['json', 'default'],
+              outputFile: './test-output.json',
+            },
+          })
+        );
+      `,
+      'src/setupTests.ts' : `import '@testing-library/jest-dom';`,
+       'src/App.test.tsx' : `
+       import { expect } from 'vitest';
+       import { render, screen, fireEvent } from '@testing-library/react';
+       import App from './App';
+
+       test('renders counter and increments', () => {
         render(<App />);
         const countElement = screen.getByText(/Count: 0/i);
         expect(countElement).toBeInTheDocument();
-      
+
         const button = screen.getByText(/Increment/i);
         fireEvent.click(button);
-      
         expect(screen.getByText(/Count: 1/i)).toBeInTheDocument();
       });
-      `,
-      
-      'src/index.css': `
-      body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        background-color: #f0f0f0;
-      }
-      `,
-      'package.json': `{
-        "name": "react",
-        "version": "1.0.0",
-        "dependencies": {
-          "react": "^18.0.0",
-          "react-dom": "^18.0.0",
-          "react-scripts": "^5.0.1",
-          "vitest": "^0.22.1",
-          "@testing-library/react": "^12.1.2",
-          "ajv": "^8.11.0"
-        },
-        "scripts": {
-          "start": "react-scripts start",
-          "build": "react-scripts build",
-          "test": "vitest"
-        }
-      }`
-    },
+
+       `
+    }
+     ,
   dependencies: {
     'react': '^18.0.0',
     'react-dom': '^18.0.0',

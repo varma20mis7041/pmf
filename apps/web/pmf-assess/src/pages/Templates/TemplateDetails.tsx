@@ -61,6 +61,7 @@ const TemplateDetailedPage = () => {
     },[]);
 
     const getFiles = async(files:any) => {
+        console.log("files",files)
         updatePopupStatus(true);
         updatePopupState(popupStatus.loading);
         const fileNames = Object.keys(files);
