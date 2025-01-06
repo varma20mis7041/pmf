@@ -1,0 +1,1 @@
+ALTER TABLE "assignment_attempts" ADD COLUMN "assignment_name" varchar;

@@ -46,6 +46,8 @@ export const assignments = pgTable('assignments', {
 export const assignmentAttempts = pgTable('assignment_attempts', {
     id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
     assignmentId: integer('assignment_id').notNull().references(() => assignments.id),
+    assignmentName : varchar('assignment_name'),
+    level : varchar('level'),
     userId: integer('user_id').notNull().references(() => users.id),
     status: varchar('status').notNull(), // e.g., 
     score: integer('score'),

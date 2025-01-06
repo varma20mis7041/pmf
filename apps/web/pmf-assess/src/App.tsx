@@ -12,6 +12,8 @@ import { fetchTemplates } from './redux/fetchTemplatesSlice';
 import AssignmentDetails from './pages/Assignments/AssignmentDetails';
 import GetStarted from './Layouts/GetStarted';
 import Test from './pages/Test';
+import Attempts from './pages/Attempts';
+import AttemptDetails from './pages/AttemptDetails';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -42,6 +44,8 @@ const App = () => {
               <Route path='/assignments/new/:id/:template' element={<CreateAssignment />} />
               <Route path='/assignments/:id' element={<AssignmentDetails />} />
               <Route path='/test/:id' element={<Test />} />
+              <Route path='/attempts' element = {<Attempts />} />
+              <Route path='/attempts/:id' element = {<AttemptDetails />} />
             </Routes>
           </div>
         </div>

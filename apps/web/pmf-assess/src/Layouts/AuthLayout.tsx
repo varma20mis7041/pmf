@@ -17,7 +17,7 @@ const AuthLayout = () => {
     const navigate = useNavigate();
 
     const onClickLogout = () => {
-        localStorage.setItem(role,null);
+        localStorage.removeItem(role);
         navigate('/get-started')
     }
     
